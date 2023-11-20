@@ -1,6 +1,8 @@
 # Semantic Release with NPM Workspaces
 
-Help you use semantic release with npm workspaces.
+Simplify the process of releasing a monorepo with npm workspaces.
+
+> Only publish packages that changed.
 
 # Installation
 
@@ -36,6 +38,7 @@ settings = {
     release: {
         extends: 'semantic-release-commit-filter',
         ci: true,
+        plugins: [...]
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: []
@@ -60,3 +63,10 @@ If you do not specify the `plugins` property in the `release` object, it will us
 
 The plugins configure with recommended settings.
 Checkout `settings.ts` for more information.
+
+## Examples
+
+Some examples of how to use this package:
+
+- [npm-workspaces-example](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo-example)
+- [withastro-utils/utils](https://github.com/withastro-utils/utils)
