@@ -1,3 +1,5 @@
+## [1.0.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v1.0.0...v1.0.1) (2023-11-20)
+
 # 1.0.0 (2023-11-20)
 
 
