@@ -1,0 +1,57 @@
+{
+  "name": "semantic-release-npm-workspaces-monorepo",
+  "version": "0.0.1",
+  "description": "Help you use semantic-release with npm workspaces",
+  "type": "module",
+  "scripts": {
+    "build": "rm -r dist; tsc",
+    "prepack": "npm run build",
+    "release": "semantic-release"
+  },
+  "homepage": "https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo.git#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "semantic-release-npm-workspaces-monorepo": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./forms.js": "./forms.js",
+    "./dist/settings.js": "./dist/settings.js",
+    "./dist/integration.js": "./dist/integration.js"
+  },
+  "files": [
+    "dist/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "npm-workspaces",
+    "monorepo",
+    "semantic-release"
+  ],
+  "author": "Ido S.",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.9.2",
+    "@types/npm-which": "^3.0.3"
+  },
+  "dependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "cosmiconfig": "^8.3.6",
+    "defaults": "^3.0.0",
+    "npm-which": "^3.0.1",
+    "semantic-release": "^22.0.8",
+    "semantic-release-commit-filter": "^1.0.2"
+  }
+}
