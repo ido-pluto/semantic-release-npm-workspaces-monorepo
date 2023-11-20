@@ -10,7 +10,6 @@ const npmWhichPromise = promisify(npmWhich(process.cwd()));
 
 export default class PublishPackages {
     private _packageScanner: ScanPublishOrder;
-    private _allPackagesByOrder: string[] = [];
 
     public async scan() {
         this._packageScanner = new ScanPublishOrder();
@@ -23,7 +22,7 @@ export default class PublishPackages {
         for (const packagePath of this._packageScanner.packagesOrderPath) {
             const packageJsonPath = path.join(packagePath, 'package.json');
 
-            const packageUpdater = new UpdatePackages(packageJsonPath, this._allPackagesByOrder);
+            const packageUpdater = new UpdatePackages(packageJsonPath, this._packageScanner.packageOrder);
             await PublishPackages._updatePackageJson(packageUpdater);
             PublishPackages._publishPackage(packagePath, bin);
             await packageUpdater.restoreOriginalPackageJson();
