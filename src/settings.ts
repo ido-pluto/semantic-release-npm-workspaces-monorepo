@@ -15,7 +15,7 @@ export const SETTINGS = {
         branches: [
             'main', 'master'
         ],
-        plugins: defaultPlugins()
+        plugins: []
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
@@ -28,8 +28,10 @@ export async function importSettings() {
 
     if (result) {
         Object.assign(SETTINGS, defaults(result.config, SETTINGS));
-        SETTINGS.release.plugins = result.config.release.plugins || defaultPlugins();
+        SETTINGS.release.plugins = result.config.release.plugins;
     }
+
+    SETTINGS.release.plugins ??= defaultPlugins();
 }
 
 function defaultPlugins() {
