@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v1.1.1...v1.1.2) (2023-11-21)
+
+
+### Bug Fixes
+
+* **update-packages:** fetch retry ([6b1aaec](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/6b1aaecfcf4048dd9bb8ad68f86743cc6a913434))
+
 ## [1.1.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v1.1.0...v1.1.1) (2023-11-21)
 
 
