@@ -12,10 +12,14 @@ export const SETTINGS = {
     release: {
         extends: 'semantic-release-commit-filter',
         ci: true,
+        branches: [
+            'main', 'master'
+        ],
         plugins: defaultPlugins()
     },
     semanticReleaseBin: 'semantic-release',
-    semanticReleaseBinArgs: []
+    semanticReleaseBinArgs: [],
+    preConfiguredChangelog: true
 };
 
 export async function importSettings() {
@@ -24,7 +28,7 @@ export async function importSettings() {
 
     if (result) {
         Object.assign(SETTINGS, defaults(result.config, SETTINGS));
-        SETTINGS.release.plugins = result.config.release.plugins || SETTINGS.release.plugins;
+        SETTINGS.release.plugins = result.config.release.plugins || defaultPlugins();
     }
 }
 
@@ -115,12 +119,14 @@ function defaultPlugins() {
                 }
             }
         ],
-        '@semantic-release/changelog',
+        ...(SETTINGS.preConfiguredChangelog ? ['@semantic-release/changelog'] : []),
         ...(hasNpmToken ? ['@semantic-release/npm'] : []),
-        '@semantic-release/github',
-        [
-            '@semantic-release/git',
-            {assets: ['CHANGELOG.md', 'LICENSE']},
-        ],
+        ...(SETTINGS.preConfiguredChangelog ? [
+            '@semantic-release/github',
+            [
+                '@semantic-release/git',
+                {assets: ['CHANGELOG.md', 'LICENSE']},
+            ],
+        ] : [])
     ];
 }

@@ -38,10 +38,14 @@ settings = {
     release: {
         extends: 'semantic-release-commit-filter',
         ci: true,
+        branches: [
+            "main", "master"
+        ],
         plugins: [...]
     },
     semanticReleaseBin: 'semantic-release',
-    semanticReleaseBinArgs: []
+    semanticReleaseBinArgs: [],
+    preConfiguredChangelog: true // use the changelog plugin with the default configuration
 }
 ```
 
