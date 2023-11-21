@@ -29,7 +29,7 @@ export async function importSettings() {
 
     if (result) {
         Object.assign(SETTINGS, defaults(result.config, SETTINGS));
-        SETTINGS.release.plugins = result.config.release.plugins;
+        SETTINGS.release.plugins = result.config?.release?.plugins;
     }
 
     SETTINGS.release.plugins ??= defaultPlugins();
