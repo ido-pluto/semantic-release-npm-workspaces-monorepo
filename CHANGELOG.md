@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v1.1.0...v1.1.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* **settings:** initialization access ([c6e721d](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/c6e721d4a6eb45d3b7e6d9209f892832a650edd2))
+
 # [1.1.0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v1.0.2...v1.1.0) (2023-11-21)
 
 
