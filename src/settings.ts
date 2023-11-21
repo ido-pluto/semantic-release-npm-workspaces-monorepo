@@ -19,7 +19,8 @@ export const SETTINGS = {
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
-    preConfiguredChangelog: true
+    preConfiguredChangelog: true,
+    npmRelease: false
 };
 
 export async function importSettings() {
@@ -35,13 +36,12 @@ export async function importSettings() {
 }
 
 function defaultPlugins() {
-    const hasNpmToken = Boolean(process.env.NPM_TOKEN);
     return [
         [
             '@semantic-release/commit-analyzer',
             {
                 'preset': 'angular',
-                'releaseRules': hasNpmToken ? [
+                'releaseRules': SETTINGS.npmRelease ? [
                     {
                         'type': 'docs',
                         'scope': 'README',
@@ -122,7 +122,7 @@ function defaultPlugins() {
             }
         ],
         ...(SETTINGS.preConfiguredChangelog ? ['@semantic-release/changelog'] : []),
-        ...(hasNpmToken ? ['@semantic-release/npm'] : []),
+        ...(SETTINGS.npmRelease ? ['@semantic-release/npm'] : []),
         ...(SETTINGS.preConfiguredChangelog ? [
             '@semantic-release/github',
             [

@@ -45,7 +45,8 @@ settings = {
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
-    preConfiguredChangelog: true // use the changelog plugin with the default configuration
+    preConfiguredChangelog: true, // use the changelog plugin with the default configuration
+    npmRelease: false
 }
 ```
 
@@ -61,7 +62,7 @@ If you do not specify the `plugins` property in the `release` object, it will us
 
 - @semantic-release/commit-analyzer
 - @semantic-release/release-notes-generator
-- @semantic-release/npm (if `NPM_TOKEN` is set)
+- @semantic-release/npm (if `npmRelease` is set true)
 - @semantic-release/github
 - @semantic-release/git
 
