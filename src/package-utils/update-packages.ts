@@ -1,6 +1,14 @@
 import fs from 'fs/promises';
 import {PackageDependencies, PackageJSON} from '../types.js';
 import {SETTINGS} from '../settings.js';
+import fetchRetry from 'fetch-retry';
+
+const nodeFetchWithRetry = fetchRetry(fetch);
+
+const FETCH_RETRY_OPTIONS = {
+    retries: 3,
+    retryDelay: 1000
+};
 
 export default class UpdatePackages {
     private _originalPackageContent: PackageJSON;
@@ -48,7 +56,7 @@ export default class UpdatePackages {
      * Get the latest version of package from npm registry
      */
     public static async getLatestVersion(packageName: string): Promise<string> {
-        const packageSearch = await fetch(`${SETTINGS.registry}-/v1/search?text=${packageName}&size=1`);
+        const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
         const packageSearchJson = await packageSearch.json();
         return packageSearchJson.objects[0].package.version;
     }

@@ -50,6 +50,7 @@
     "@semantic-release/git": "^10.0.1",
     "cosmiconfig": "^8.3.6",
     "defaults": "^3.0.0",
+    "fetch-retry": "^5.0.6",
     "npm-which": "^3.0.1",
     "semantic-release": "^22.0.8",
     "semantic-release-commit-filter": "^1.0.2"
