@@ -86,3 +86,24 @@ Some examples of how to use this package:
 
 - [npm-workspaces-example](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo-example)
 - [withastro-utils/utils](https://github.com/withastro-utils/utils)
+
+## How to "Breaking Changes"?
+
+The release of breaking changes can be confusing sometimes.
+
+You need to write a commit message with `BREAKING CHANGE` in the footer of the commit to trigger a major release.
+
+(You cannot use `BREAKING CHANGE` as the type)
+
+```bash
+git commit -m "feat: add new feature
+BREAKING CHANGE: this is a breaking change"
+```
+
+To ease the process, you can use the `breaking` type in the commit message to trigger a major release in one line.
+
+```bash
+git commit -m "breaking: this is a breaking change"
+```
+
+
