@@ -5,7 +5,9 @@ import {SETTINGS} from '../settings.js';
 import npmWhich from 'npm-which';
 import {promisify} from 'util';
 import {execSync} from 'child_process';
+import sleep from 'sleep-promise';
 
+const SLEEP_BEFORE_PUBLISH = 1000;
 const npmWhichPromise = promisify(npmWhich(process.cwd()));
 
 export default class PublishPackages {
@@ -24,7 +26,7 @@ export default class PublishPackages {
 
             const packageUpdater = new UpdatePackages(packageJsonPath, this._packageScanner.packageOrder);
             await PublishPackages._updatePackageJson(packageUpdater);
-            PublishPackages._publishPackage(packagePath, bin);
+            await PublishPackages._publishPackage(packagePath, bin);
             await packageUpdater.restoreOriginalPackageJson();
         }
     }
@@ -40,7 +42,10 @@ export default class PublishPackages {
         await packageUpdater.savePackageJson();
     }
 
-    private static _publishPackage(packagePath: string, exec: string) {
+    private static async _publishPackage(packagePath: string, exec: string) {
+        console.log(`\n\nRunning semantic release: ${packagePath}\n`);
+        await sleep(SLEEP_BEFORE_PUBLISH);
+
         const command = [exec].concat(SETTINGS.semanticReleaseBinArgs).join(' ');
         execSync(command, {
             stdio: 'inherit',
