@@ -31,7 +31,7 @@ module.exports = {
                         'release': "major"
                     },
                     {
-                        'type': "BREAKING CHANGE",
+                        'type': "BREAKING CHANGES",
                         'release': "major"
                     },
                     {
