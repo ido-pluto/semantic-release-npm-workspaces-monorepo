@@ -7,7 +7,7 @@ import {promisify} from 'util';
 import {execSync} from 'child_process';
 import sleep from 'sleep-promise';
 
-const SLEEP_BEFORE_PUBLISH = 1000;
+const SLEEP_BEFORE_NEW_PUBLISH = 3000;
 const npmWhichPromise = promisify(npmWhich(process.cwd()));
 
 export default class PublishPackages {
@@ -44,12 +44,14 @@ export default class PublishPackages {
 
     private static async _publishPackage(packagePath: string, exec: string) {
         console.log(`\n\nRunning semantic release: ${packagePath}\n`);
-        await sleep(SLEEP_BEFORE_PUBLISH);
 
         const command = [exec].concat(SETTINGS.semanticReleaseBinArgs).join(' ');
         execSync(command, {
             stdio: 'inherit',
             cwd: packagePath
         });
+
+        // give time to npm registry to update, before next publish
+        await sleep(SLEEP_BEFORE_NEW_PUBLISH);
     }
 }
