@@ -19,7 +19,7 @@ export const SETTINGS = {
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
-    preConfiguredChangelog: true,
+    changelogCommit: true,
     npmRelease: false
 };
 
@@ -54,6 +54,14 @@ function defaultPlugins() {
                     {
                         'type': 'style',
                         'release': 'patch'
+                    },
+                    {
+                        'type': '*!',
+                        'release': 'major'
+                    },
+                    {
+                        'breaking': true,
+                        'release': 'major'
                     }
                 ] : [],
                 'parserOpts': {
@@ -121,9 +129,9 @@ function defaultPlugins() {
                 }
             }
         ],
-        ...(SETTINGS.preConfiguredChangelog ? ['@semantic-release/changelog'] : []),
+        ...(SETTINGS.changelogCommit ? ['@semantic-release/changelog'] : []),
         ...(SETTINGS.npmRelease ? ['@semantic-release/npm'] : []),
-        ...(SETTINGS.preConfiguredChangelog ? [
+        ...(SETTINGS.changelogCommit ? [
             '@semantic-release/github',
             [
                 '@semantic-release/git',

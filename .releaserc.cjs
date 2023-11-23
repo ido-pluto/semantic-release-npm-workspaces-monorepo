@@ -21,6 +21,14 @@ module.exports = {
                     {
                         "type": "style",
                         "release": "patch"
+                    },
+                    {
+                        'type': "*!",
+                        'release': "major"
+                    },
+                    {
+                        'breaking': true,
+                        'release': "major"
                     }
                 ],
                 "parserOpts": {

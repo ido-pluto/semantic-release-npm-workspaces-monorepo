@@ -2,6 +2,13 @@
 
 Simplify the process of releasing a monorepo with npm workspaces.
 
+Work with:
+
+- Npm workspaces
+- Bun workspaces
+- Yarn workspaces
+- Pnpm workspaces
+
 > Only publish packages that changed.
 
 # Installation
@@ -17,6 +24,7 @@ Add this to your `package.json` of your workspace root:
 ```json
 {
   "workspaceRelease": {
+    "npmRelease": true,
     "release": {
       // semantic-release configuration
     }
@@ -45,8 +53,10 @@ settings = {
     },
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
-    preConfiguredChangelog: true, // use the changelog plugin with the default configuration
-    npmRelease: false
+
+    // semantic-release pre-configured plugins
+    changelogCommit: true, // create & update CHANGELOG.md
+    npmRelease: false // use NPM_TOKEN to publish packages
 }
 ```
 
@@ -62,9 +72,10 @@ If you do not specify the `plugins` property in the `release` object, it will us
 
 - @semantic-release/commit-analyzer
 - @semantic-release/release-notes-generator
+- @semantic-release/changelog (if `changelogCommit` is set true)
 - @semantic-release/npm (if `npmRelease` is set true)
-- @semantic-release/github
-- @semantic-release/git
+- @semantic-release/github (if `changelogCommit` is set true)
+- @semantic-release/git (if `changelogCommit` is set true)
 
 The plugins configure with recommended settings.
 Checkout `settings.ts` for more information.

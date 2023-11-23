@@ -37,7 +37,14 @@
   "keywords": [
     "npm-workspaces",
     "monorepo",
-    "semantic-release"
+    "semantic-release",
+    "workspaces",
+    "npm",
+    "release",
+    "publish",
+    "yarn-workspaces",
+    "bun-workspaces",
+    "automation"
   ],
   "author": "Ido S.",
   "license": "MIT",
