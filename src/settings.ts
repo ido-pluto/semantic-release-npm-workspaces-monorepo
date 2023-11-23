@@ -77,7 +77,14 @@ function defaultPlugins() {
                             'release': 'patch'
                         }
                     ] : [])
-                ]
+                ],
+                'parserOpts': {
+                    'noteKeywords': [
+                        'BREAKING CHANGE',
+                        'BREAKING CHANGES',
+                        'BREAKING'
+                    ]
+                }
             }
         ],
         [

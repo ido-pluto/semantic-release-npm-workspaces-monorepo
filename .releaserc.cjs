@@ -42,7 +42,14 @@ module.exports = {
                         'type': 'types',
                         'release': 'patch'
                     }
-                ]
+                ],
+                "parserOpts": {
+                    "noteKeywords": [
+                        "BREAKING CHANGE",
+                        "BREAKING CHANGES",
+                        "BREAKING"
+                    ]
+                }
             }
         ],
         [
