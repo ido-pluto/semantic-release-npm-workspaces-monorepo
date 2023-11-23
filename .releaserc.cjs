@@ -29,6 +29,18 @@ module.exports = {
                     {
                         'breaking': true,
                         'release': "major"
+                    },
+                    {
+                        'type': "BREAKING CHANGE",
+                        'release': "major"
+                    },
+                    {
+                        'type': "BREAKING CHANGE",
+                        'release': "major"
+                    },
+                    {
+                        'type': "BREAKING",
+                        'release': "major"
                     }
                 ],
                 "parserOpts": {

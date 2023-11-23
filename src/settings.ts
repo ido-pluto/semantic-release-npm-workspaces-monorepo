@@ -59,8 +59,21 @@ function defaultPlugins() {
                         'type': '*!',
                         'release': 'major'
                     },
+
                     {
                         'breaking': true,
+                        'release': 'major'
+                    },
+                    {
+                        'type': 'BREAKING CHANGE',
+                        'release': 'major'
+                    },
+                    {
+                        'type': 'BREAKING CHANGE',
+                        'release': 'major'
+                    },
+                    {
+                        'type': 'BREAKING',
                         'release': 'major'
                     }
                 ] : [],
