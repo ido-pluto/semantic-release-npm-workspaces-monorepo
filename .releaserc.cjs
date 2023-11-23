@@ -10,6 +10,22 @@ module.exports = {
                 "preset": "angular",
                 "releaseRules": [
                     {
+                        'breaking': true,
+                        'release': 'major'
+                    },
+                    {
+                        'revert': true,
+                        'release': 'patch'
+                    },
+                    {
+                        'type': '*!',
+                        'release': 'major'
+                    },
+                    {
+                        'type': 'breaking',
+                        'release': 'major'
+                    },
+                    {
                         "type": "docs",
                         "scope": "README",
                         "release": "patch"
@@ -23,24 +39,8 @@ module.exports = {
                         "release": "patch"
                     },
                     {
-                        'type': "*!",
-                        'release': "major"
-                    },
-                    {
-                        'breaking': true,
-                        'release': "major"
-                    },
-                    {
-                        'type': "BREAKING CHANGES",
-                        'release': "major"
-                    },
-                    {
-                        'type': "BREAKING CHANGE",
-                        'release': "major"
-                    },
-                    {
-                        'type': "BREAKING",
-                        'release': "major"
+                        'type': 'types',
+                        'release': 'patch'
                     }
                 ],
                 "parserOpts": {

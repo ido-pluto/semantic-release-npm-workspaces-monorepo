@@ -41,42 +41,43 @@ function defaultPlugins() {
             '@semantic-release/commit-analyzer',
             {
                 'preset': 'angular',
-                'releaseRules': SETTINGS.npmRelease ? [
+                'releaseRules': [
                     {
-                        'type': 'docs',
-                        'scope': 'README',
-                        'release': 'patch'
+                        'breaking': true,
+                        'release': 'major'
                     },
                     {
-                        'type': 'refactor',
-                        'release': 'patch'
-                    },
-                    {
-                        'type': 'style',
+                        'revert': true,
                         'release': 'patch'
                     },
                     {
                         'type': '*!',
                         'release': 'major'
                     },
-
                     {
-                        'breaking': true,
+                        'type': 'breaking',
                         'release': 'major'
                     },
-                    {
-                        'type': 'BREAKING CHANGES',
-                        'release': 'major'
-                    },
-                    {
-                        'type': 'BREAKING CHANGE',
-                        'release': 'major'
-                    },
-                    {
-                        'type': 'BREAKING',
-                        'release': 'major'
-                    }
-                ] : [],
+                    ...(SETTINGS.npmRelease ? [
+                        {
+                            'type': 'docs',
+                            'scope': 'README',
+                            'release': 'patch'
+                        },
+                        {
+                            'type': 'refactor',
+                            'release': 'patch'
+                        },
+                        {
+                            'type': 'style',
+                            'release': 'patch'
+                        },
+                        {
+                            'type': 'types',
+                            'release': 'patch'
+                        }
+                    ] : [])
+                ],
                 'parserOpts': {
                     'noteKeywords': [
                         'BREAKING CHANGE',
