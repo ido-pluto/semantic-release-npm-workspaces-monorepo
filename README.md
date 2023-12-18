@@ -56,7 +56,10 @@ settings = {
 
     // semantic-release pre-configured plugins
     changelogCommit: true, // create & update CHANGELOG.md
-    npmRelease: false // use NPM_TOKEN to publish packages
+    npmRelease: false, // use NPM_TOKEN to publish packages
+    extendsReleaseRules: [], // extend defaults release rules
+    extendsNoteGeneratorTypes: [], // extend defaults note generator types
+    extendsDefaultPlugins: [], // add custom plugins additonally to the pre-configured plugins
 }
 ```
 

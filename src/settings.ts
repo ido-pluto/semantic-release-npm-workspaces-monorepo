@@ -20,7 +20,10 @@ export const SETTINGS = {
     semanticReleaseBin: 'semantic-release',
     semanticReleaseBinArgs: [],
     changelogCommit: true,
-    npmRelease: false
+    npmRelease: false,
+    extendsReleaseRules: [],
+    extendsNoteGeneratorTypes: [],
+    extendsDefaultPlugins: []
 };
 
 export async function importSettings() {
@@ -42,6 +45,7 @@ function defaultPlugins() {
             {
                 'preset': 'angular',
                 'releaseRules': [
+                    ...SETTINGS.extendsReleaseRules,
                     {
                         'breaking': true,
                         'release': 'major'
@@ -94,6 +98,7 @@ function defaultPlugins() {
                 'presetConfig': {
                     'header': 'Release Notes',
                     'types': [
+                        ...SETTINGS.extendsNoteGeneratorTypes,
                         {
                             'type': 'feat',
                             'section': 'Features'
@@ -151,6 +156,7 @@ function defaultPlugins() {
                 '@semantic-release/git',
                 {assets: ['CHANGELOG.md', 'LICENSE']},
             ],
-        ] : [])
+        ] : []),
+        ...SETTINGS.extendsDefaultPlugins
     ];
 }
