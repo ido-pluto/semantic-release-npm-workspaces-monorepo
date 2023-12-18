@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.0.2...v2.1.0) (2023-12-18)
+
+
+### Features
+
+* extend default configurations ([481a04a](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/481a04a186e6c857dab7284bfebd637fbc292540))
+
 ## [2.0.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.0.1...v2.0.2) (2023-11-23)
 
 
