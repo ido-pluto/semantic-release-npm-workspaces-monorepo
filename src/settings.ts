@@ -18,6 +18,7 @@ export const SETTINGS = {
         plugins: []
     },
     semanticReleaseBin: 'semantic-release',
+    sleepBetweenPublishesMS: 10_000,
     semanticReleaseBinArgs: [],
     changelogCommit: true,
     npmRelease: false,

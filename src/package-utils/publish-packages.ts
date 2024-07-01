@@ -6,8 +6,8 @@ import npmWhich from 'npm-which';
 import {promisify} from 'util';
 import {execSync} from 'child_process';
 import sleep from 'sleep-promise';
+import prettyMilliseconds from 'pretty-ms';
 
-const SLEEP_BEFORE_NEW_PUBLISH = 3000;
 const npmWhichPromise = promisify(npmWhich(process.cwd()));
 
 export default class PublishPackages {
@@ -21,6 +21,7 @@ export default class PublishPackages {
     public async loopPackages() {
         const bin = await npmWhichPromise(SETTINGS.semanticReleaseBin) as string;
 
+        let index = 0;
         for (const packagePath of this._packageScanner.packagesOrderPath) {
             const packageJsonPath = path.join(packagePath, 'package.json');
 
@@ -28,6 +29,11 @@ export default class PublishPackages {
             await PublishPackages._updatePackageJson(packageUpdater);
             await PublishPackages._publishPackage(packagePath, bin);
             await packageUpdater.restoreOriginalPackageJson();
+
+            if(++index != this._packageScanner.packagesOrderPath.length) {
+                console.log(`\n\nSleeping for ${prettyMilliseconds(SETTINGS.sleepBetweenPublishesMS)} before next publish (giving NPM time to reload)\n`);
+                await sleep(SETTINGS.sleepBetweenPublishesMS);
+            }
         }
     }
 
@@ -50,8 +56,5 @@ export default class PublishPackages {
             stdio: 'inherit',
             cwd: packagePath
         });
-
-        // give time to npm registry to update, before next publish
-        await sleep(SLEEP_BEFORE_NEW_PUBLISH);
     }
 }
