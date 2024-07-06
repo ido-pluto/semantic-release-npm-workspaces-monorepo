@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.1.1...v2.2.0) (2024-07-06)
+
+
+### Features
+
+* **cache:** cache releases versions ([02f6e22](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/02f6e2237a7f3c5861515408e15b2e4d6b8cbb20))
+
 ## [2.1.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.1.0...v2.1.1) (2024-07-01)
 
 
