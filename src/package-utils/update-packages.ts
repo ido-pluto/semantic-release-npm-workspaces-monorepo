@@ -62,14 +62,15 @@ export default class UpdatePackages {
         const cacheVersion = cache[packageName];
         console.log('Cache version for', packageName, 'is', cacheVersion);
 
-        let npmVersion: string;
-        try {
-            const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
-            const packageSearchJson = await packageSearch.json();
-            npmVersion = packageSearchJson.objects[0].package.version;
-        } catch (error){
-            console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
-            npmVersion = '0.0.1';
+        let npmVersion = '0.0.1';
+        if(SETTINGS.npmRelease){
+            try {
+                const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
+                const packageSearchJson = await packageSearch.json();
+                npmVersion = packageSearchJson.objects[0].package.version;
+            } catch (error){
+                console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
+            }
         }
 
         if (cacheVersion) {
