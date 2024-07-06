@@ -1,9 +1,8 @@
 import fs from 'fs/promises';
-import { PackageDependencies, PackageJSON } from '../types.js';
-import { SETTINGS } from '../settings.js';
+import {PackageDependencies, PackageJSON} from '../types.js';
+import {SETTINGS} from '../settings.js';
 import fetchRetry from 'fetch-retry';
-import { readCacheStorage } from '../storage.js';
-import semver from 'semver';
+import {readCacheStorage} from '../storage.js';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -60,22 +59,21 @@ export default class UpdatePackages {
     public static async getLatestVersion(packageName: string): Promise<string> {
         const cache = await readCacheStorage();
         const cacheVersion = cache[packageName];
-        console.log('Cache version for', packageName, 'is', cacheVersion);
-
-        let npmVersion = '0.0.1';
-        if(SETTINGS.npmRelease){
-            try {
-                const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
-                const packageSearchJson = await packageSearch.json();
-                npmVersion = packageSearchJson.objects[0].package.version;
-            } catch (error){
-                console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
-            }
-        }
 
         if (cacheVersion) {
-            return semver.maxSatisfying([cacheVersion, npmVersion], '*');
+            console.log('Cache version for', packageName, 'is', cacheVersion);
+            return cacheVersion;
+        } else {
+            console.log('Cache version for', packageName, 'is not found');
         }
-        return npmVersion;
+
+        try {
+            const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
+            const packageSearchJson = await packageSearch.json();
+            return packageSearchJson.objects[0].package.version;
+        } catch (error) {
+            console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
+            return '0.0.1';
+        }
     }
 }

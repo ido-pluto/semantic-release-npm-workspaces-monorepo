@@ -5,15 +5,15 @@ import fs from 'fs/promises';
 
 type UpdateCacheVersion = {
     name: string;
-    version: string;
+    publishedVersion: string;
 };
 
 export const UpdateCacheVersionCommand: CommandModule<object, UpdateCacheVersion> = {
-    command: "cache [version] <name>",
+    command: "cache [publishedVersion] <name>",
     describe: "Update the version cache for a package",
     builder(yargs) {
         return yargs
-            .positional('version', {
+            .positional('publishedVersion', {
                 type: 'string',
                 describe: 'The new version of the package',
                 demandOption: true
@@ -27,7 +27,7 @@ export const UpdateCacheVersionCommand: CommandModule<object, UpdateCacheVersion
     handler: updateCacheVersion,
 };
 
-export async function updateCacheVersion({ name, version }: UpdateCacheVersion) {
+export async function updateCacheVersion({ name, publishedVersion }: UpdateCacheVersion) {
     const cache = await readCacheStorage();
 
     if (!name) {
@@ -40,8 +40,8 @@ export async function updateCacheVersion({ name, version }: UpdateCacheVersion) 
         }
     }
 
-    cache[name] = version;
+    cache[name] = publishedVersion;
 
     await writeCacheStorage(cache);
-    console.log(`Updated cache for ${name} to ${version}`);
+    console.log(`Updated cache for ${name} to ${publishedVersion}`);
 }

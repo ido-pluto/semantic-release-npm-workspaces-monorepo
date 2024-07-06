@@ -71,8 +71,9 @@ export default class ScanPublishOrder {
      * Check if all package dependencies already in order
      */
     private _checkOkToBeNextInOrder(dependencies = {}) {
+        const monorepoIncludesDeps = Object.values(this._packageContentMap).map(x => x.name);
         for (const [key] of Object.entries(dependencies)) {
-            if (this._packageContentMap[key] && !this._packageOrder.includes(key)) {
+            if (monorepoIncludesDeps.includes(key) && !this._packageOrder.includes(key)) {
                 return false;
             }
         }

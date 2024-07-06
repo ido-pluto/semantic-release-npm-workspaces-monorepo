@@ -19,7 +19,6 @@ export default class PublishPackages {
     public async loopPackages() {
         const bin = await npmWhichPromise(SETTINGS.semanticReleaseBin) as string;
 
-        let index = 0;
         for (const packagePath of this._packageScanner.packagesOrderPath) {
             const packageJsonPath = path.join(packagePath, 'package.json');
 
