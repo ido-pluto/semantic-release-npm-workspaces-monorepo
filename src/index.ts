@@ -1,16 +1,5 @@
-#!/usr/bin/env node
+import { publishMonorepo } from "./cli/commands/publish.js";
+import { updateCacheVersion } from "./cli/commands/updateTempStorage.js";
 
-import {importSettings} from './settings.js';
-import PublishPackages from './package-utils/publish-packages.js';
-
-async function main() {
-    await importSettings();
-
-    const publish = new PublishPackages();
-    await publish.scan();
-    await publish.loopPackages();
-}
-
-await main();
-
+export { publishMonorepo, updateCacheVersion }
 

@@ -1,5 +1,5 @@
 import path from 'path';
-import {cosmiconfig} from 'cosmiconfig';
+import { cosmiconfig } from 'cosmiconfig';
 import defaults from 'defaults';
 
 const CONFIG_NAME = 'workspaceRelease';
@@ -18,7 +18,6 @@ export const SETTINGS = {
         plugins: []
     },
     semanticReleaseBin: 'semantic-release',
-    sleepBetweenPublishesMS: 10_000,
     semanticReleaseBinArgs: [],
     changelogCommit: true,
     npmRelease: false,
@@ -155,9 +154,12 @@ function defaultPlugins() {
             '@semantic-release/github',
             [
                 '@semantic-release/git',
-                {assets: ['CHANGELOG.md', 'LICENSE']},
+                { assets: ['CHANGELOG.md', 'LICENSE'] },
             ],
         ] : []),
-        ...SETTINGS.extendsDefaultPlugins
+        ...SETTINGS.extendsDefaultPlugins,
+        ["@semantic-release/exec", {
+            "publishCmd": "npx -y semantic-release-npm-workspaces-monorepo cache ${nextRelease.version}"
+        }],
     ];
 }

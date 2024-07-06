@@ -1,7 +1,9 @@
 import fs from 'fs/promises';
-import {PackageDependencies, PackageJSON} from '../types.js';
-import {SETTINGS} from '../settings.js';
+import { PackageDependencies, PackageJSON } from '../types.js';
+import { SETTINGS } from '../settings.js';
 import fetchRetry from 'fetch-retry';
+import { readCacheStorage } from '../storage.js';
+import semver from 'semver';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -53,11 +55,26 @@ export default class UpdatePackages {
     }
 
     /**
-     * Get the latest version of package from npm registry
+     * Get the latest version of package from cache or npm registry
      */
     public static async getLatestVersion(packageName: string): Promise<string> {
-        const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
-        const packageSearchJson = await packageSearch.json();
-        return packageSearchJson.objects[0].package.version;
+        const cache = await readCacheStorage();
+        const cacheVersion = cache[packageName];
+        console.log('Cache version for', packageName, 'is', cacheVersion);
+
+        let npmVersion: string;
+        try {
+            const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
+            const packageSearchJson = await packageSearch.json();
+            npmVersion = packageSearchJson.objects[0].package.version;
+        } catch (error){
+            console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
+            npmVersion = '0.0.1';
+        }
+
+        if (cacheVersion) {
+            return semver.maxSatisfying([cacheVersion, npmVersion], '*');
+        }
+        return npmVersion;
     }
 }

@@ -20,14 +20,12 @@
     "access": "public"
   },
   "bin": {
-    "semantic-release-npm-workspaces-monorepo": "./dist/index.js"
+    "semantic-release-npm-workspaces-monorepo": "./dist/cli/cli.js"
   },
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./forms.js": "./forms.js",
-    "./dist/settings.js": "./dist/settings.js",
-    "./dist/integration.js": "./dist/integration.js"
+    "./dist/index.js": "./dist/index.js"
   },
   "files": [
     "dist/*",
@@ -50,18 +48,22 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.9.2",
-    "@types/npm-which": "^3.0.3"
+    "@types/npm-which": "^3.0.3",
+    "@types/semver": "^7.5.8",
+    "@types/yargs": "^17.0.32",
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "cosmiconfig": "^8.3.6",
     "defaults": "^3.0.0",
     "fetch-retry": "^5.0.6",
     "npm-which": "^3.0.1",
-    "pretty-ms": "^9.0.0",
     "semantic-release": "^22.0.8",
     "semantic-release-commit-filter": "^1.0.2",
-    "sleep-promise": "^9.1.0"
+    "semver": "^7.6.2",
+    "yargs": "^17.7.2"
   }
 }
