@@ -9,7 +9,7 @@ type UpdateCacheVersion = {
 };
 
 export const UpdateCacheVersionCommand: CommandModule<object, UpdateCacheVersion> = {
-    command: "cache [publishedVersion] <name>",
+    command: "cache <publishedVersion> [name]",
     describe: "Update the version cache for a package",
     builder(yargs) {
         return yargs
@@ -21,7 +21,7 @@ export const UpdateCacheVersionCommand: CommandModule<object, UpdateCacheVersion
             .option('name', {
                 type: 'string',
                 describe: 'The name of the package to update, default to the name in the package json of the cwd',
-                demandOption: true
+                demandOption: false
             });
     },
     handler: updateCacheVersion,
