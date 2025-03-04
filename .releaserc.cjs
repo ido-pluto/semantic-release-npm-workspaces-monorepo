@@ -1,6 +1,11 @@
 module.exports = {
     "branches": [
-        "main"
+        "main",
+        {
+            "name": "beta",
+            "prerelease": true,
+            "channel": "beta"
+        }
     ],
     "ci": true,
     "plugins": [
