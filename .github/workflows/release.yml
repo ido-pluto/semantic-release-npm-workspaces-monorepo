@@ -8,10 +8,25 @@ on:
       - '*'
 
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install modules
+        run: |
+          npm ci
+      - name: Run tests
+        run: |
+          npm run test
 
   release:
     name: Build & Release
     runs-on: ubuntu-latest
+    needs: test
 
     concurrency: release-${{ github.ref }}
     permissions:

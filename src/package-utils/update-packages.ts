@@ -3,6 +3,7 @@ import {PackageDependencies, PackageJSON} from '../types.js';
 import {SETTINGS} from '../settings.js';
 import fetchRetry from 'fetch-retry';
 import {readCacheStorage} from '../storage.js';
+import { findPrereleaseChannel, getCurrentGitBranch } from '../git.js';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -54,9 +55,9 @@ export default class UpdatePackages {
     }
 
     /**
-     * Get the latest version of package from cache or npm registry
+     * Get the latest version of package from cache or npm registry, respecting release channels
      */
-    public static async getLatestVersion(packageName: string): Promise<string> {
+    public static async getLatestVersion(packageName: string, currentBranch = ''): Promise<string> {
         const cache = await readCacheStorage();
         const cacheVersion = cache[packageName];
 
@@ -68,9 +69,18 @@ export default class UpdatePackages {
         }
 
         try {
-            const packageSearch = await nodeFetchWithRetry(`${SETTINGS.registry}/-/v1/search?text=${packageName}&size=1`, FETCH_RETRY_OPTIONS);
-            const packageSearchJson = await packageSearch.json();
-            return packageSearchJson.objects[0].package.version;
+
+            if(currentBranch === '') currentBranch = await getCurrentGitBranch();
+            const prereleaseChannel = findPrereleaseChannel(currentBranch);
+
+            const packageInfo = await nodeFetchWithRetry(`${SETTINGS.registry}/${packageName}`, FETCH_RETRY_OPTIONS);
+            const packageInfoJson = await packageInfo.json();
+
+            if (!packageInfoJson || !packageInfoJson['dist-tags']) throw new Error(`Failed to get package info for ${packageName}`);
+            if (prereleaseChannel && packageInfoJson['dist-tags'][prereleaseChannel]) return packageInfoJson['dist-tags'][prereleaseChannel];
+
+
+            return packageInfoJson['dist-tags'].latest;
         } catch (error) {
             console.error(`Failed to get version from NPM for ${packageName}: ${error.message}`);
             return '0.0.1';
