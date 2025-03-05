@@ -1,3 +1,12 @@
+# [3.0.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* Fixed issue where incorrect branch is returned in gitlab CI ([10b5fad](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/10b5fad10c4cddf964bc53e3f1f464be066112db))
+* issue where incorrect branch is returned in gitlab CI ([daaa4cf](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/daaa4cfc7e82af8861c9be9125d621fb65980eac))
+* Linting ([d3e5c8a](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d3e5c8ac4d1523606e1dae461a8c0629aa233f09))
+
 # [3.0.0-beta.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.3...v3.0.0-beta.1) (2025-03-05)
 
 
