@@ -1,3 +1,22 @@
+# [3.0.0-beta.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.3...v3.0.0-beta.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* merge fixes ([47b071c](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/47b071cf3d460646cbaad13d84573b988c0fe529))
+
+
+### Features
+
+* Beta deployments added ([eb2c75f](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/eb2c75fe49f7deacd998328ec6ab85b851be65c0))
+* respect release channels when resolving dependencies ([5190ed2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/5190ed283161b4385afdad73a97733a2568a32ab))
+* support prerelease ([d2acfd7](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d2acfd761ca1b10f496cf63ab3f1cee46224ec6f))
+
+
+### BREAKING CHANGES
+
+* search with dist-tags
+
 ## [2.2.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.2...v2.2.3) (2024-07-07)
 
 
