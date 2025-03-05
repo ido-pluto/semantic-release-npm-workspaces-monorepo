@@ -121,8 +121,9 @@ export default class UpdatePackages {
         return templateVersion.replace(originalVersion, toVersion);
     }
 
-    static async findBranchInfo(): Promise<BranchObject | null> {
-        const branch = this._cacheCurrentBranch ??= (await simpleGit.simpleGit().branch()).current;
-        return SETTINGS.release.branches.find(x => typeof x === 'object' && micromatch.isMatch(branch, x.name)) as (BranchObject | null);
-    }
+static async findBranchInfo(): Promise<BranchObject | null> {
+    const ciBranch = process.env.CI_COMMIT_BRANCH || process.env.GITHUB_REF_NAME || process.env.CIRCLE_BRANCH || process.env.TRAVIS_BRANCH || process.env.BITBUCKET_BRANCH;
+    const branch = this._cacheCurrentBranch ??= ciBranch ||(await simpleGit.simpleGit().branch()).current;
+    return SETTINGS.release.branches.find(x => typeof x === 'object' && micromatch.isMatch(branch, x.name)) as (BranchObject | null);
+}
 }
