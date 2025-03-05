@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.2...v2.2.3) (2024-07-07)
+
+
+### Bug Fixes
+
+* **cache:** cli receive arguments ([6070db0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/6070db09fe3e16f7c4e45a792ef6947d2ccc47e0))
+
 ## [2.2.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.1...v2.2.2) (2024-07-06)
 
 

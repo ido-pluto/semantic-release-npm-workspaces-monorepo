@@ -6,7 +6,9 @@
   "scripts": {
     "build": "rm -r dist; tsc",
     "prepack": "npm run build",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "homepage": "https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo.git#readme",
   "repository": {
@@ -51,7 +53,8 @@
     "@types/npm-which": "^3.0.3",
     "@types/semver": "^7.5.8",
     "@types/yargs": "^17.0.32",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vitest": "^3.0.7"
   },
   "dependencies": {
     "@semantic-release/changelog": "^6.0.3",
@@ -63,8 +66,7 @@
     "npm-which": "^3.0.1",
     "semantic-release": "^22.0.8",
     "semantic-release-commit-filter": "^1.0.2",
-    "semver": "^7.6.2",
-    "simple-git": "^3.27.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "semver": "^7.7.1"
   }
 }
