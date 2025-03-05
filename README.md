@@ -39,7 +39,7 @@ The default configuration of this package is:
 
 ```js
 settings = {
-    versionTemplate: '^${version}',
+    preReleaseVersionTemplate: false, // example: '${version}', override the template in the package.json for pre-release versions
     registry: 'https://registry.npmjs.org',
     workspace: path.join(process.cwd(), 'packages'),
     tagFormat: '${name}@${version}',
@@ -47,7 +47,12 @@ settings = {
         extends: 'semantic-release-commit-filter',
         ci: true,
         branches: [
-            "main", "master"
+            "main", 
+            "master",
+            {
+                name: "beta",
+                prerelease: true
+            }
         ],
         plugins: [...]
     },
@@ -65,7 +70,7 @@ settings = {
 
 ### How it works
 
-- It will update all the workspace (local dependencies) to the latest from the registry before running semantic release.
+- It will update all the workspace (local dependencies) to the latest version from the registry before running semantic release, respecting configured release channels. When working in a prerelease branch (e.g., beta), it will fetch the latest prerelease version from that channel if available.
 - It will do it by the dependency graph, meaning that it will update the packages in the correct order.
 - Use `semantic-release-commit-filter` to filter the commits to only publish packages that changed.
 
