@@ -39,7 +39,7 @@ The default configuration of this package is:
 
 ```js
 settings = {
-    versionTemplate: '^${version}',
+    preReleaseVersionTemplate: false, // example: '${version}', override the template in the package.json for pre-release versions
     registry: 'https://registry.npmjs.org',
     workspace: path.join(process.cwd(), 'packages'),
     tagFormat: '${name}@${version}',
@@ -47,7 +47,12 @@ settings = {
         extends: 'semantic-release-commit-filter',
         ci: true,
         branches: [
-            "main", "master"
+            "main", 
+            "master",
+            {
+                name: "beta",
+                prerelease: true
+            }
         ],
         plugins: [...]
     },

@@ -1,11 +1,12 @@
 import path from 'path';
 import { cosmiconfig } from 'cosmiconfig';
 import defaults from 'defaults';
+import { BranchObject } from 'semantic-release';
 
 const CONFIG_NAME = 'workspaceRelease';
 
 export const SETTINGS = {
-    versionTemplate: '^${version}',
+    preReleaseVersionTemplate: '${version}',
     registry: 'https://registry.npmjs.org',
     workspace: path.join(process.cwd(), 'packages'),
     tagFormat: '${name}@${version}',
@@ -13,8 +14,13 @@ export const SETTINGS = {
         extends: 'semantic-release-commit-filter',
         ci: true,
         branches: [
-            'main', 'master'
-        ],
+            'main',
+            'master',
+            {
+                name: 'beta',
+                prerelease: true
+            }
+        ] as (string | BranchObject)[],
         plugins: []
     },
     semanticReleaseBin: 'semantic-release',
