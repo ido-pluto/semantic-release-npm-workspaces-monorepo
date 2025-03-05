@@ -4,8 +4,9 @@ import { SETTINGS } from '../settings.js';
 import fetchRetry from 'fetch-retry';
 import { readCacheStorage } from '../storage.js';
 import semver from "semver";
-import simpleGit from 'simple-git';
+import * as simpleGit from 'simple-git';
 import { BranchObject } from 'semantic-release';
+import micromatch from 'micromatch';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -15,8 +16,11 @@ const FETCH_RETRY_OPTIONS = {
 };
 
 export default class UpdatePackages {
+    /**
+     * @internal
+     */
+    static _cacheCurrentBranch: string;
     private _originalPackageContent: PackageJSON;
-    private _cacheCurrentBranch: string;
     public packageContent: PackageJSON;
 
 
@@ -32,7 +36,7 @@ export default class UpdatePackages {
     private async _updateVersions(data: PackageDependencies = {}) {
         for (const key in data) {
             if (this._packages.includes(key)) {
-                const { version, isPrerelease } = await this.getLatestVersion(key);
+                const { version, isPrerelease } = await UpdatePackages.getLatestVersion(key);
                 data[key] = this.useVersionTemplate(data[key], version, isPrerelease);
             }
         }
@@ -60,7 +64,7 @@ export default class UpdatePackages {
     /**
      * Get the latest version of package from cache or npm registry
      */
-    public async getLatestVersion(packageName: string): Promise<{ version: string, isPrerelease: boolean; }> {
+    public static async getLatestVersion(packageName: string): Promise<{ version: string, isPrerelease: boolean; }> {
         const cache = await readCacheStorage();
         const cacheVersion = cache[packageName];
 
@@ -117,8 +121,8 @@ export default class UpdatePackages {
         return templateVersion.replace(originalVersion, toVersion);
     }
 
-    async findBranchInfo(): Promise<BranchObject | null> {
-        const branch = this._cacheCurrentBranch ??= (await simpleGit.default().branch()).current;
-        return SETTINGS.release.branches.find(x => typeof x === 'object' && x.name === branch) as (BranchObject | null);
+    static async findBranchInfo(): Promise<BranchObject | null> {
+        const branch = this._cacheCurrentBranch ??= (await simpleGit.simpleGit().branch()).current;
+        return SETTINGS.release.branches.find(x => typeof x === 'object' && micromatch.isMatch(branch, x.name)) as (BranchObject | null);
     }
 }

@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['test/**/*.{test,spec}.{js,ts}'],
-    exclude: ['node_modules', 'dist', '.idea', '.git', '.cache']
+    exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
+    maxConcurrency: 1
   },
 })
