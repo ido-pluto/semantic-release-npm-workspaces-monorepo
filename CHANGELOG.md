@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.0...v3.0.1) (2025-03-06)
+
+
+### Bug Fixes
+
+* avoid throwing error when package.json does not exist ([d9c7619](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d9c7619d74da913ec6c56bbe6763d2e69947a28d))
+* Avoid throwing error when package.json does not exist ([0485d4f](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/0485d4fa8fd05efe4127dcad9ba1b43f4109ec7e))
+* Remove redundant fs.access ([92be7bd](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/92be7bde6f39da38098e19256e42b6918dfa87b1))
+
 # [3.0.0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v2.2.3...v3.0.0) (2025-03-05)
 
 
