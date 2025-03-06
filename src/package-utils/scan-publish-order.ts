@@ -43,8 +43,6 @@ export default class ScanPublishOrder {
             const packageJsonPath = path.join(packagePath, 'package.json');
 
             try {
-                await fs.access(packageJsonPath);
-
                 if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
                     const packageContent = await fs.readFile(packageJsonPath, 'utf-8').then(JSON.parse);
                     this._packageContentMap[packagePath] = packageContent;
