@@ -40,14 +40,19 @@ export default class ScanPublishOrder {
     });
     for (const packageState of packages) {
       if (packageState.isFile()) continue;
-
       const packagePath = path.join(this._scanLocation, packageState.name);
       const packageJsonPath = path.join(packagePath, 'package.json');
-      if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
-        const packageContent = await fs
-          .readFile(packageJsonPath, 'utf-8')
-          .then(JSON.parse);
-        this._packageContentMap[packagePath] = packageContent;
+
+      try {
+        if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
+          const packageContent = await fs
+            .readFile(packageJsonPath, 'utf-8')
+            .then(JSON.parse);
+          this._packageContentMap[packagePath] = packageContent;
+        }
+      } catch (error) {
+        console.warn(`Skipping package at ${packagePath}: ${error.message}`);
+        continue;
       }
     }
   }
