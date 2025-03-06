@@ -9,44 +9,50 @@ import {execSync} from 'child_process';
 const npmWhichPromise = promisify(npmWhich(process.cwd()));
 
 export default class PublishPackages {
-    private _packageScanner: ScanPublishOrder;
+  private _packageScanner: ScanPublishOrder;
 
-    public async scan() {
-        this._packageScanner = new ScanPublishOrder();
-        await this._packageScanner.scan();
+  public async scan() {
+    this._packageScanner = new ScanPublishOrder();
+    await this._packageScanner.scan();
+  }
+
+  public async loopPackages() {
+    const bin = (await npmWhichPromise(SETTINGS.semanticReleaseBin)) as string;
+
+    for (const packagePath of this._packageScanner.packagesOrderPath) {
+      const packageJsonPath = path.join(packagePath, 'package.json');
+
+      const packageUpdater = new UpdatePackages(
+        packageJsonPath,
+        this._packageScanner.packageOrder,
+      );
+      await PublishPackages._updatePackageJson(packageUpdater);
+      await PublishPackages._publishPackage(packagePath, bin);
+      await packageUpdater.restoreOriginalPackageJson();
     }
+  }
 
-    public async loopPackages() {
-        const bin = await npmWhichPromise(SETTINGS.semanticReleaseBin) as string;
+  private static async _updatePackageJson(packageUpdater: UpdatePackages) {
+    await packageUpdater.updateDeps();
 
-        for (const packagePath of this._packageScanner.packagesOrderPath) {
-            const packageJsonPath = path.join(packagePath, 'package.json');
+    packageUpdater.packageContent.release = {
+      ...SETTINGS.release,
+      tagFormat: SETTINGS.tagFormat.replace(
+        '${name}',
+        packageUpdater.packageContent.name,
+      ),
+    };
 
-            const packageUpdater = new UpdatePackages(packageJsonPath, this._packageScanner.packageOrder);
-            await PublishPackages._updatePackageJson(packageUpdater);
-            await PublishPackages._publishPackage(packagePath, bin);
-            await packageUpdater.restoreOriginalPackageJson();
-        }
-    }
+    await packageUpdater.savePackageJson();
+  }
 
-    private static async _updatePackageJson(packageUpdater: UpdatePackages) {
-        await packageUpdater.updateDeps();
+  private static async _publishPackage(packagePath: string, exec: string) {
+    console.log(`\n\nRunning semantic release: ${packagePath}\n`);
 
-        packageUpdater.packageContent.release = {
-            ...SETTINGS.release,
-            tagFormat: SETTINGS.tagFormat.replace('${name}', packageUpdater.packageContent.name)
-        };
-
-        await packageUpdater.savePackageJson();
-    }
-
-    private static async _publishPackage(packagePath: string, exec: string) {
-        console.log(`\n\nRunning semantic release: ${packagePath}\n`);
-
-        const command = [exec].concat(SETTINGS.semanticReleaseBinArgs).join(' ');
-        execSync(command, {
-            stdio: 'inherit',
-            cwd: packagePath
-        });
-    }
+    const command = [exec].concat(SETTINGS.semanticReleaseBinArgs).join(' ');
+    execSync(command, {
+      stdio: 'inherit',
+      cwd: packagePath,
+    });
+  }
 }
