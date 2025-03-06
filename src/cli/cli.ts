@@ -8,6 +8,7 @@ import {packageJSON} from '../config.js';
 
 const yarg = yargs(hideBin(process.argv));
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 yarg
   .scriptName(packageJSON.name)
   .command(UpdateCacheVersionCommand)
