@@ -40,7 +40,7 @@ export async function importSettings() {
   try {
     const workspacePackageJsonPath = path.join(result.filepath, '..', 'package.json');
     const {workspaces} = JSON.parse(await fs.readFile(workspacePackageJsonPath, 'utf8'));
-    SETTINGS.workspaces = workspaces.packages;
+    SETTINGS.workspaces = workspaces;
   } catch (error) {
     console.warn('Could not read workspaces from package.json');
   }
