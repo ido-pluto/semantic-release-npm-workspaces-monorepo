@@ -23,6 +23,9 @@ Add this to your `package.json` of your workspace root:
 
 ```json
 {
+  "workspaces": [
+    "packages/*"
+  ],
   "workspaceRelease": {
     "npmRelease": true,
     "release": {
@@ -41,7 +44,6 @@ The default configuration of this package is:
 settings = {
     preReleaseVersionTemplate: false, // example: '${version}', override the template in the package.json for pre-release versions
     registry: 'https://registry.npmjs.org',
-    workspace: path.join(process.cwd(), 'packages'),
     tagFormat: '${name}@${version}',
     release: {
         extends: 'semantic-release-commit-filter',

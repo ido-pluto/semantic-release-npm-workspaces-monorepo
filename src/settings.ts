@@ -2,13 +2,14 @@ import path from 'path';
 import {cosmiconfig} from 'cosmiconfig';
 import defaults from 'defaults';
 import {BranchObject} from 'semantic-release';
+import fs from 'fs/promises';
 
 const CONFIG_NAME = 'workspaceRelease';
 
 export const SETTINGS = {
   preReleaseVersionTemplate: '${version}',
   registry: 'https://registry.npmjs.org',
-  workspace: path.join(process.cwd(), 'packages'),
+  workspaces: ['packages'],
   tagFormat: '${name}@${version}',
   release: {
     extends: 'semantic-release-commit-filter',
@@ -35,6 +36,14 @@ export const SETTINGS = {
 export async function importSettings() {
   const explorer = cosmiconfig(CONFIG_NAME);
   const result = await explorer.search();
+
+  try {
+    const workspacePackageJsonPath = path.join(result.filepath, '..', 'package.json');
+    const {workspaces} = JSON.parse(await fs.readFile(workspacePackageJsonPath, 'utf8'));
+    SETTINGS.workspaces = workspaces.packages;
+  } catch (error) {
+    console.warn('Could not read workspaces from package.json');
+  }
 
   if (result) {
     Object.assign(SETTINGS, defaults(result.config, SETTINGS));
@@ -70,24 +79,24 @@ function defaultPlugins() {
           },
           ...(SETTINGS.npmRelease
             ? [
-                {
-                  type: 'docs',
-                  scope: 'README',
-                  release: 'patch',
-                },
-                {
-                  type: 'refactor',
-                  release: 'patch',
-                },
-                {
-                  type: 'style',
-                  release: 'patch',
-                },
-                {
-                  type: 'types',
-                  release: 'patch',
-                },
-              ]
+              {
+                type: 'docs',
+                scope: 'README',
+                release: 'patch',
+              },
+              {
+                type: 'refactor',
+                release: 'patch',
+              },
+              {
+                type: 'style',
+                release: 'patch',
+              },
+              {
+                type: 'types',
+                release: 'patch',
+              },
+            ]
             : []),
         ],
         parserOpts: {
@@ -149,9 +158,9 @@ function defaultPlugins() {
     ...(SETTINGS.npmRelease ? ['@semantic-release/npm'] : []),
     ...(SETTINGS.changelogCommit
       ? [
-          '@semantic-release/github',
-          ['@semantic-release/git', {assets: ['CHANGELOG.md', 'LICENSE']}],
-        ]
+        '@semantic-release/github',
+        ['@semantic-release/git', {assets: ['CHANGELOG.md', 'LICENSE']}],
+      ]
       : []),
     ...SETTINGS.extendsDefaultPlugins,
     [

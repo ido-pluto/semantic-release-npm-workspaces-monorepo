@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import * as path from 'node:path';
 import {PackageJSON} from '../types.js';
 import {SETTINGS} from '../settings.js';
+import {glob} from 'glob';
 
 type PackageContentMap = {
   [packagePath: string]: PackageJSON;
@@ -32,15 +33,19 @@ export default class ScanPublishOrder {
     });
   }
 
-  public constructor(private _scanLocation = SETTINGS.workspace) {}
+  public constructor(private _scanLocations = SETTINGS.workspaces) {
+  }
 
   private async _readAllPackages() {
-    const packages = await fs.readdir(this._scanLocation, {
-      withFileTypes: true,
+    const packages = await glob(this._scanLocations, {
+      ignore: 'node_modules/**',
+      withFileTypes: true
     });
+
     for (const packageState of packages) {
       if (packageState.isFile()) continue;
-      const packagePath = path.join(this._scanLocation, packageState.name);
+
+      const packagePath = packageState.fullpath();
       const packageJsonPath = path.join(packagePath, 'package.json');
 
       try {
@@ -52,7 +57,6 @@ export default class ScanPublishOrder {
         }
       } catch (error) {
         console.warn(`Skipping package at ${packagePath}: ${error.message}`);
-        continue;
       }
     }
   }
