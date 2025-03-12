@@ -33,13 +33,12 @@ export default class ScanPublishOrder {
     });
   }
 
-  public constructor(private _scanLocations = SETTINGS.workspaces) {
-  }
+  public constructor(private _scanLocations = SETTINGS.workspaces) {}
 
   private async _readAllPackages() {
     const packages = await glob(this._scanLocations, {
       ignore: 'node_modules/**',
-      withFileTypes: true
+      withFileTypes: true,
     });
 
     for (const packageState of packages) {

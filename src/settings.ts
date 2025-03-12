@@ -38,8 +38,14 @@ export async function importSettings() {
   const result = await explorer.search();
 
   try {
-    const workspacePackageJsonPath = path.join(result.filepath, '..', 'package.json');
-    const {workspaces} = JSON.parse(await fs.readFile(workspacePackageJsonPath, 'utf8'));
+    const workspacePackageJsonPath = path.join(
+      result.filepath,
+      '..',
+      'package.json',
+    );
+    const {workspaces} = JSON.parse(
+      await fs.readFile(workspacePackageJsonPath, 'utf8'),
+    );
     SETTINGS.workspaces = workspaces;
   } catch (error) {
     console.warn('Could not read workspaces from package.json');
@@ -79,24 +85,24 @@ function defaultPlugins() {
           },
           ...(SETTINGS.npmRelease
             ? [
-              {
-                type: 'docs',
-                scope: 'README',
-                release: 'patch',
-              },
-              {
-                type: 'refactor',
-                release: 'patch',
-              },
-              {
-                type: 'style',
-                release: 'patch',
-              },
-              {
-                type: 'types',
-                release: 'patch',
-              },
-            ]
+                {
+                  type: 'docs',
+                  scope: 'README',
+                  release: 'patch',
+                },
+                {
+                  type: 'refactor',
+                  release: 'patch',
+                },
+                {
+                  type: 'style',
+                  release: 'patch',
+                },
+                {
+                  type: 'types',
+                  release: 'patch',
+                },
+              ]
             : []),
         ],
         parserOpts: {
@@ -158,9 +164,9 @@ function defaultPlugins() {
     ...(SETTINGS.npmRelease ? ['@semantic-release/npm'] : []),
     ...(SETTINGS.changelogCommit
       ? [
-        '@semantic-release/github',
-        ['@semantic-release/git', {assets: ['CHANGELOG.md', 'LICENSE']}],
-      ]
+          '@semantic-release/github',
+          ['@semantic-release/git', {assets: ['CHANGELOG.md', 'LICENSE']}],
+        ]
       : []),
     ...SETTINGS.extendsDefaultPlugins,
     [
