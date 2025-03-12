@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-import * as path from 'node:path';
 import {PackageJSON} from '../types.js';
 import {SETTINGS} from '../settings.js';
 import {glob} from 'glob';
@@ -36,24 +35,30 @@ export default class ScanPublishOrder {
   public constructor(private _scanLocations = SETTINGS.workspaces) {}
 
   private async _readAllPackages() {
-    const packages = await glob(this._scanLocations, {
-      ignore: 'node_modules/**',
+    const locations = this._scanLocations.map(location => {
+      if (location.at(-1) !== '/') {
+        location += '/';
+      }
+
+      location += 'package.json';
+      return location;
+    });
+
+    const packages = await glob(locations, {
+      ignore: '**/node_modules/**',
+      nodir: true,
+      stat: true,
       withFileTypes: true,
     });
 
-    for (const packageState of packages) {
-      if (packageState.isFile()) continue;
-
-      const packagePath = packageState.fullpath();
-      const packageJsonPath = path.join(packagePath, 'package.json');
+    for (const packageJsonState of packages) {
+      if (!packageJsonState.isFile()) continue;
+      const packagePath = packageJsonState.parent.fullpath();
 
       try {
-        if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
-          const packageContent = await fs
-            .readFile(packageJsonPath, 'utf-8')
-            .then(JSON.parse);
-          this._packageContentMap[packagePath] = packageContent;
-        }
+        this._packageContentMap[packagePath] = await fs
+          .readFile(packageJsonState.fullpath(), 'utf-8')
+          .then(JSON.parse);
       } catch (error) {
         console.warn(`Skipping package at ${packagePath}: ${error.message}`);
       }
