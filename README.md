@@ -90,6 +90,30 @@ If you do not specify the `plugins` property in the `release` object, it will us
 The plugins configure with recommended settings.
 Checkout `settings.ts` for more information.
 
+## Per Package Configuration
+If you need the flexibility to configure some packages separately, you can use the `perPackageConfig` object within the `workspaceRelease` object.
+
+```json
+{
+  "workspaces": [
+    "packages/*"
+  ],
+  "workspaceRelease": {
+    "npmRelease": true,
+
+    "perPackageConfig": {
+      "packages/internal/**": {
+        // override specific configuration
+        "npmRelease": false
+      }
+    }
+  },
+  "scripts": {
+    "release": "semantic-release-npm-workspaces-monorepo"
+  }
+}
+```
+
 ## Examples
 
 Some examples of how to use this package:
