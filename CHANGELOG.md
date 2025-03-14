@@ -1,3 +1,10 @@
+# [3.1.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.1...v3.1.0-beta.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* **scan:** skip node_modules ([3685bb7](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/3685bb75536a5401cb0ef9fcb66fb196e33bfab5))
+
 # [3.1.0-beta.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.1...v3.1.0-beta.1) (2025-03-12)
 
 
