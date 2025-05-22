@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
-import * as path from 'node:path';
 import {PackageJSON} from '../types.js';
 import {SETTINGS} from '../settings.js';
+import {glob} from 'glob';
 
 type PackageContentMap = {
   [packagePath: string]: PackageJSON;
@@ -32,27 +32,35 @@ export default class ScanPublishOrder {
     });
   }
 
-  public constructor(private _scanLocation = SETTINGS.workspace) {}
+  public constructor(private _scanLocations = SETTINGS.workspaces) {}
 
   private async _readAllPackages() {
-    const packages = await fs.readdir(this._scanLocation, {
+    const locations = this._scanLocations.map(location => {
+      if (location.at(-1) !== '/') {
+        location += '/';
+      }
+
+      location += 'package.json';
+      return location;
+    });
+
+    const packages = await glob(locations, {
+      ignore: '**/node_modules/**',
+      nodir: true,
+      stat: true,
       withFileTypes: true,
     });
-    for (const packageState of packages) {
-      if (packageState.isFile()) continue;
-      const packagePath = path.join(this._scanLocation, packageState.name);
-      const packageJsonPath = path.join(packagePath, 'package.json');
+
+    for (const packageJsonState of packages) {
+      if (!packageJsonState.isFile()) continue;
+      const packagePath = packageJsonState.parent.fullpath();
 
       try {
-        if (await fs.stat(packageJsonPath).then(stat => stat.isFile())) {
-          const packageContent = await fs
-            .readFile(packageJsonPath, 'utf-8')
-            .then(JSON.parse);
-          this._packageContentMap[packagePath] = packageContent;
-        }
+        this._packageContentMap[packagePath] = await fs
+          .readFile(packageJsonState.fullpath(), 'utf-8')
+          .then(JSON.parse);
       } catch (error) {
         console.warn(`Skipping package at ${packagePath}: ${error.message}`);
-        continue;
       }
     }
   }

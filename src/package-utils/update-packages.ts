@@ -1,12 +1,13 @@
 import fs from 'fs/promises';
 import {PackageDependencies, PackageJSON} from '../types.js';
-import {SETTINGS} from '../settings.js';
+import {generatePackageSettings, SETTINGS} from '../settings.js';
 import fetchRetry from 'fetch-retry';
 import {readCacheStorage} from '../storage.js';
 import semver from 'semver';
 import * as simpleGit from 'simple-git';
 import {BranchObject} from 'semantic-release';
 import micromatch from 'micromatch';
+import path from 'path';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -21,15 +22,22 @@ export default class UpdatePackages {
    */
   static _cacheCurrentBranch: string;
   private _originalPackageContent: PackageJSON;
+  private readonly _packageJSONPath: string;
+  public readonly settings: typeof SETTINGS;
   public packageContent: PackageJSON;
 
   /**
    * Update versions of organization packages in `dependencies` and `devDependencies` objects
    */
   public constructor(
-    private _packagePath: string,
+    packagePath: string,
     private _packages: string[],
-  ) {}
+  ) {
+    this._packageJSONPath = path.join(packagePath, 'package.json');
+
+    const relativePath = path.relative(process.cwd(), packagePath);
+    this.settings = generatePackageSettings(relativePath);
+  }
 
   /**
    * Update versions of organization packages in `dependencies` like object
@@ -37,8 +45,10 @@ export default class UpdatePackages {
   private async _updateVersions(data: PackageDependencies = {}) {
     for (const key in data) {
       if (this._packages.includes(key)) {
-        const {version, isPrerelease} =
-          await UpdatePackages.getLatestVersion(key);
+        const {version, isPrerelease} = await UpdatePackages.getLatestVersion(
+          key,
+          this.settings,
+        );
         data[key] = this.useVersionTemplate(data[key], version, isPrerelease);
       }
     }
@@ -46,13 +56,13 @@ export default class UpdatePackages {
 
   private async _readPackageJson() {
     this._originalPackageContent = await fs
-      .readFile(this._packagePath, 'utf-8')
+      .readFile(this._packageJSONPath, 'utf-8')
       .then(JSON.parse);
     this.packageContent = structuredClone(this._originalPackageContent);
   }
 
   public async savePackageJson(content = this.packageContent) {
-    await fs.writeFile(this._packagePath, JSON.stringify(content, null, 2));
+    await fs.writeFile(this._packageJSONPath, JSON.stringify(content, null, 2));
   }
 
   public async restoreOriginalPackageJson() {
@@ -70,11 +80,12 @@ export default class UpdatePackages {
    */
   public static async getLatestVersion(
     packageName: string,
+    settings = SETTINGS,
   ): Promise<{version: string; isPrerelease: boolean}> {
     const cache = await readCacheStorage();
     const cacheVersion = cache[packageName];
 
-    const branchInfo = await this.findBranchInfo();
+    const branchInfo = await this.findBranchInfo(settings);
     const isPrereleaseChannel = Boolean(branchInfo?.prerelease);
 
     if (cacheVersion) {
@@ -89,7 +100,7 @@ export default class UpdatePackages {
 
     try {
       const packageSearch = await nodeFetchWithRetry(
-        `${SETTINGS.registry}/${packageName}`,
+        `${settings.registry}/${packageName}`,
         FETCH_RETRY_OPTIONS,
       );
       const packageSearchJson = await packageSearch.json();
@@ -134,8 +145,8 @@ export default class UpdatePackages {
     toVersion: string,
     isPrerelease = false,
   ) {
-    if (isPrerelease && SETTINGS.preReleaseVersionTemplate) {
-      return SETTINGS.preReleaseVersionTemplate.replace(
+    if (isPrerelease && this.settings.preReleaseVersionTemplate) {
+      return this.settings.preReleaseVersionTemplate.replace(
         '${version}',
         toVersion,
       );
@@ -148,7 +159,9 @@ export default class UpdatePackages {
     return templateVersion.replace(originalVersion, toVersion);
   }
 
-  static async findBranchInfo(): Promise<BranchObject | null> {
+  static async findBranchInfo(
+    settings = SETTINGS,
+  ): Promise<BranchObject | null> {
     const ciBranch =
       process.env.CI_COMMIT_BRANCH ||
       process.env.GITHUB_REF_NAME ||
@@ -157,7 +170,7 @@ export default class UpdatePackages {
       process.env.BITBUCKET_BRANCH;
     const branch = (this._cacheCurrentBranch ??=
       ciBranch || (await simpleGit.simpleGit().branch()).current);
-    return SETTINGS.release.branches.find(
+    return settings.release.branches.find(
       x => typeof x === 'object' && micromatch.isMatch(branch, x.name),
     ) as BranchObject | null;
   }

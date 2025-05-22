@@ -59,9 +59,9 @@
     "@types/npm-which": "^3.0.3",
     "@types/semver": "^7.5.8",
     "@types/yargs": "^17.0.32",
+    "gts": "^6.0.2",
     "typescript": "^5.6.3",
-    "vitest": "^3.0.7",
-    "gts": "^6.0.2"
+    "vitest": "^3.0.7"
   },
   "dependencies": {
     "@semantic-release/changelog": "^6.0.3",
@@ -70,6 +70,7 @@
     "cosmiconfig": "^8.3.6",
     "defaults": "^3.0.0",
     "fetch-retry": "^5.0.6",
+    "glob": "^11.0.1",
     "micromatch": "^4.0.8",
     "npm-which": "^3.0.1",
     "semantic-release": "^22.0.8",

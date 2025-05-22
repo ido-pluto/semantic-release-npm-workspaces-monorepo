@@ -1,5 +1,4 @@
 import ScanPublishOrder from './scan-publish-order.js';
-import path from 'path';
 import UpdatePackages from './update-packages.js';
 import {SETTINGS} from '../settings.js';
 import npmWhich from 'npm-which';
@@ -20,14 +19,16 @@ export default class PublishPackages {
     const bin = (await npmWhichPromise(SETTINGS.semanticReleaseBin)) as string;
 
     for (const packagePath of this._packageScanner.packagesOrderPath) {
-      const packageJsonPath = path.join(packagePath, 'package.json');
-
       const packageUpdater = new UpdatePackages(
-        packageJsonPath,
+        packagePath,
         this._packageScanner.packageOrder,
       );
       await PublishPackages._updatePackageJson(packageUpdater);
-      await PublishPackages._publishPackage(packagePath, bin);
+      await PublishPackages._publishPackage(
+        packagePath,
+        bin,
+        packageUpdater.settings,
+      );
       await packageUpdater.restoreOriginalPackageJson();
     }
   }
@@ -36,8 +37,8 @@ export default class PublishPackages {
     await packageUpdater.updateDeps();
 
     packageUpdater.packageContent.release = {
-      ...SETTINGS.release,
-      tagFormat: SETTINGS.tagFormat.replace(
+      ...packageUpdater.settings.release,
+      tagFormat: packageUpdater.settings.tagFormat.replace(
         '${name}',
         packageUpdater.packageContent.name,
       ),
@@ -46,10 +47,14 @@ export default class PublishPackages {
     await packageUpdater.savePackageJson();
   }
 
-  private static async _publishPackage(packagePath: string, exec: string) {
+  private static async _publishPackage(
+    packagePath: string,
+    exec: string,
+    settings = SETTINGS,
+  ) {
     console.log(`\n\nRunning semantic release: ${packagePath}\n`);
 
-    const command = [exec].concat(SETTINGS.semanticReleaseBinArgs).join(' ');
+    const command = [exec].concat(settings.semanticReleaseBinArgs).join(' ');
     execSync(command, {
       stdio: 'inherit',
       cwd: packagePath,

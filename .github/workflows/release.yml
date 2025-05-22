@@ -46,6 +46,8 @@ jobs:
     needs: test
     if: github.event_name != 'pull_request'
     concurrency: release-${{ github.ref }}
+    environment:
+      name: npm
     permissions:
       id-token: write
       contents: write

@@ -1,3 +1,29 @@
+# [3.1.0-beta.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.2...v3.1.0-beta.3) (2025-03-14)
+
+
+### Features
+
+* **config:** support per package config ([12cc4d5](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/12cc4d5ad1e42e4ca9996b1a1c13088b4d67d81d))
+
+# [3.1.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.1...v3.1.0-beta.2) (2025-03-12)
+
+
+### Bug Fixes
+
+* **scan:** skip node_modules ([3685bb7](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/3685bb75536a5401cb0ef9fcb66fb196e33bfab5))
+
+# [3.1.0-beta.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.1...v3.1.0-beta.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* **settings:** read workspaces ([466139e](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/466139e7b0478f4bd6a8af15f11ee14d3c68e2c9))
+
+
+### Features
+
+* **workspaces:** respect package.json workspaces pattern ([d0354cf](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d0354cf4c6a4c160e3fd313500df05bcd56bfeaa))
+
 ## [3.0.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.0...v3.0.1) (2025-03-06)
 
 
