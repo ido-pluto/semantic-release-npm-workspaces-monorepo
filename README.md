@@ -146,11 +146,16 @@ git commit -m "breaking: this is a breaking change"
 This is the new way of auto publish packages to NPM.
 You only need to connect the repo to NPM through NPM's UI.
 
+When using OIDC you MUST set it up to ALL you packages in the monorepo otherwise your CI will fail -
+because it uses semantic-release to check for changes.
+
+### How to config
+
 Go to your package settings
 ![package-settings.png](docs/package-settings.png)
 
 Configure the connection
 ![connection-config.png](docs/connection-config.png)
 
-Done!
+Done! you are all set
 ![done.png](docs/done.png)
