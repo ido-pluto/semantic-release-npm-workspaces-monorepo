@@ -63,7 +63,7 @@ settings = {
 
     // semantic-release pre-configured plugins
     changelogCommit: true, // create & update CHANGELOG.md
-    npmRelease: false, // use NPM_TOKEN to publish packages
+    npmRelease: false, // use NPM_TOKEN or OIDC to publish packages
     extendsReleaseRules: [], // extend defaults release rules
     extendsNoteGeneratorTypes: [], // extend defaults note generator types
     extendsDefaultPlugins: [], // add custom plugins additonally to the pre-configured plugins
@@ -141,3 +141,16 @@ git commit -m "breaking: this is a breaking change"
 ```
 
 
+## OIDC
+
+This is the new way of auto publish packages to NPM.
+You only need to connect the repo to NPM through NPM's UI.
+
+Go to your package settings
+![package-settings.png](docs/package-settings.png)
+
+Configure the connection
+![connection-config.png](docs/connection-config.png)
+
+Done!
+![done.png](docs/done.png)
