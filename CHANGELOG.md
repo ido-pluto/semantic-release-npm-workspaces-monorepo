@@ -1,3 +1,10 @@
+# [3.1.0-beta.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.2...v3.1.0-beta.3) (2025-03-14)
+
+
+### Features
+
+* **config:** support per package config ([12cc4d5](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/12cc4d5ad1e42e4ca9996b1a1c13088b4d67d81d))
+
 # [3.1.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.1...v3.1.0-beta.2) (2025-03-12)
 
 
