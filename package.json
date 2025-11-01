@@ -73,13 +73,13 @@
     "glob": "^11.0.1",
     "micromatch": "^4.0.8",
     "npm-which": "^3.0.1",
-    "semantic-release": "^22.0.8",
+    "semantic-release": "^25.0.1",
     "semantic-release-commit-filter": "^1.0.2",
     "semver": "^7.7.1",
     "simple-git": "^3.27.0",
     "yargs": "^17.7.2"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^22.14.0 || >= 24.10.0"
   }
 }

@@ -45,6 +45,10 @@ module.exports = {
                     {
                         'type': 'types',
                         'release': 'patch'
+                    },
+                    {
+                        'type': 'bump',
+                        'release': 'patch'
                     }
                 ],
                 "parserOpts": {
@@ -93,6 +97,10 @@ module.exports = {
                         },
                         {
                             "type": "test",
+                            "hidden": true
+                        },
+                        {
+                            "type": "bump",
                             "hidden": true
                         }
                     ]
