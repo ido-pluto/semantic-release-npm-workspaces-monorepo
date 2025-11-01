@@ -1,3 +1,5 @@
+# [3.1.0-beta.4](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.3...v3.1.0-beta.4) (2025-11-01)
+
 # [3.1.0-beta.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0-beta.2...v3.1.0-beta.3) (2025-03-14)
 
 
