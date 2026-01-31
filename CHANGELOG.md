@@ -1,3 +1,10 @@
+# [3.2.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.2.0-beta.1...v3.2.0-beta.2) (2026-01-31)
+
+
+### Features
+
+* **config:** skipping packages ([8713454](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/87134545e44b341460d30d353c4e76e632306737))
+
 # [3.2.0-beta.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0...v3.2.0-beta.1) (2025-11-01)
 
 
