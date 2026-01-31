@@ -96,15 +96,20 @@ If you need the flexibility to configure some packages separately, you can use t
 ```json
 {
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "example/*"
   ],
   "workspaceRelease": {
     "npmRelease": true,
 
     "perPackageConfig": {
       "packages/internal/**": {
-        // override specific configuration
+        // override specific configuration, generate release notes without publishing to npm
         "npmRelease": false
+      },
+      "example/**": {
+        // skip package from being checked by semantic-release
+        "skip": true
       }
     }
   },

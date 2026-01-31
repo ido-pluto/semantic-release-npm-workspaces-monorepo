@@ -23,6 +23,12 @@ export default class PublishPackages {
         packagePath,
         this._packageScanner.packageOrder,
       );
+
+      if (packageUpdater.settings.skip) {
+        console.log(`Skipping package ${packagePath}`);
+        continue;
+      }
+
       await PublishPackages._updatePackageJson(packageUpdater);
       await PublishPackages._publishPackage(
         packagePath,

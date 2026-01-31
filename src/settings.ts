@@ -34,6 +34,7 @@ export const SETTINGS = {
   extendsDefaultPlugins: [],
   perPackageConfig: {},
   autoCreatedPlugins: false,
+  skip: false,
 };
 
 export async function importSettings() {
