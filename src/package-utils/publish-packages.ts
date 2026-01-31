@@ -25,7 +25,7 @@ export default class PublishPackages {
       );
 
       if (packageUpdater.settings.skip) {
-        console.log(`Skipping package ${packagePath}`);
+        console.log(`Skipping package: ${packagePath}`);
         continue;
       }
 
