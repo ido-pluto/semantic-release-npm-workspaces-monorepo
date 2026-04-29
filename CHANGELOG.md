@@ -17,7 +17,10 @@
 ### Features
 
 * **workspaces:** respect package.json workspaces pattern ([d0354cf](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d0354cf4c6a4c160e3fd313500df05bcd56bfeaa))
+* **config:** skipping packages ([8713454](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/87134545e44b341460d30d353c4e76e632306737))
 * **config:** support per package config ([12cc4d5](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/12cc4d5ad1e42e4ca9996b1a1c13088b4d67d81d))
+
+## [3.1.1](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.1.0...v3.1.1) (2025-11-01)
 
 # [3.1.0](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.0.1...v3.1.0) (2025-05-22)
 

@@ -8,6 +8,7 @@ import * as simpleGit from 'simple-git';
 import {BranchObject} from 'semantic-release';
 import micromatch from 'micromatch';
 import path from 'path';
+import {editPackageJson} from './edit-package-json.js';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -22,6 +23,7 @@ export default class UpdatePackages {
    */
   static _cacheCurrentBranch: string;
   private _originalPackageContent: PackageJSON;
+  private _originalRawText: string;
   private readonly _packageJSONPath: string;
   public readonly settings: typeof SETTINGS;
   public packageContent: PackageJSON;
@@ -55,18 +57,23 @@ export default class UpdatePackages {
   }
 
   private async _readPackageJson() {
-    this._originalPackageContent = await fs
-      .readFile(this._packageJSONPath, 'utf-8')
-      .then(JSON.parse);
+    this._originalRawText = await fs.readFile(this._packageJSONPath, 'utf-8');
+    this._originalPackageContent = JSON.parse(this._originalRawText);
     this.packageContent = structuredClone(this._originalPackageContent);
   }
 
-  public async savePackageJson(content = this.packageContent) {
-    await fs.writeFile(this._packageJSONPath, JSON.stringify(content, null, 2));
+  public async savePackageJson() {
+    const patched = editPackageJson(
+      this._originalRawText,
+      this._originalPackageContent,
+      this.packageContent,
+    );
+    if (patched === this._originalRawText) return;
+    await fs.writeFile(this._packageJSONPath, patched);
   }
 
   public async restoreOriginalPackageJson() {
-    await this.savePackageJson(this._originalPackageContent);
+    await fs.writeFile(this._packageJSONPath, this._originalRawText);
   }
 
   public async updateDeps() {
