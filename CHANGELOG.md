@@ -1,3 +1,10 @@
+# [3.2.0-beta.3](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.2.0-beta.2...v3.2.0-beta.3) (2026-04-29)
+
+
+### Bug Fixes
+
+* preserve package.json formatting on publish ([#15](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/issues/15)) ([d2b7773](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/commit/d2b777376178d4e98beff2dba9461a379e9e2919))
+
 # [3.2.0-beta.2](https://github.com/ido-pluto/semantic-release-npm-workspaces-monorepo/compare/v3.2.0-beta.1...v3.2.0-beta.2) (2026-01-31)
 
 
