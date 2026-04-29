@@ -8,8 +8,7 @@ import * as simpleGit from 'simple-git';
 import {BranchObject} from 'semantic-release';
 import micromatch from 'micromatch';
 import path from 'path';
-import {modify, applyEdits} from 'jsonc-parser';
-import type {FormattingOptions} from 'jsonc-parser';
+import {editPackageJson} from './edit-package-json.js';
 
 const nodeFetchWithRetry = fetchRetry(fetch);
 
@@ -64,7 +63,7 @@ export default class UpdatePackages {
   }
 
   public async savePackageJson() {
-    const patched = UpdatePackages._buildPatchedPackageJson(
+    const patched = editPackageJson(
       this._originalRawText,
       this._originalPackageContent,
       this.packageContent,
@@ -75,37 +74,6 @@ export default class UpdatePackages {
 
   public async restoreOriginalPackageJson() {
     await fs.writeFile(this._packageJSONPath, this._originalRawText);
-  }
-
-  static _buildPatchedPackageJson(
-    rawText: string,
-    original: PackageJSON,
-    current: PackageJSON,
-  ): string {
-    const formattingOptions = detectFormattingOptions(rawText);
-    let text = rawText;
-
-    for (const depKey of ['dependencies', 'devDependencies'] as const) {
-      const cur = current[depKey] || {};
-      const orig = original[depKey] || {};
-      for (const name of Object.keys(cur)) {
-        if (cur[name] !== orig[name]) {
-          const edits = modify(text, [depKey, name], cur[name], {
-            formattingOptions,
-          });
-          text = applyEdits(text, edits);
-        }
-      }
-    }
-
-    if (!deepEqual(current.release, original.release)) {
-      const edits = modify(text, ['release'], current.release, {
-        formattingOptions,
-      });
-      text = applyEdits(text, edits);
-    }
-
-    return text;
   }
 
   public async updateDeps() {
@@ -213,39 +181,4 @@ export default class UpdatePackages {
       x => typeof x === 'object' && micromatch.isMatch(branch, x.name),
     ) as BranchObject | null;
   }
-}
-
-function detectFormattingOptions(text: string): FormattingOptions {
-  const eol = text.includes('\r\n') ? '\r\n' : '\n';
-  const indent = text.match(/\n([ \t]+)["{[]/);
-  if (!indent) {
-    return {tabSize: 2, insertSpaces: true, eol};
-  }
-  if (indent[1][0] === '\t') {
-    return {tabSize: 1, insertSpaces: false, eol};
-  }
-  return {tabSize: indent[1].length, insertSpaces: true, eol};
-}
-
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (a === b) return true;
-  if (
-    typeof a !== 'object' ||
-    typeof b !== 'object' ||
-    a === null ||
-    b === null
-  ) {
-    return false;
-  }
-  if (Array.isArray(a) !== Array.isArray(b)) return false;
-  const ka = Object.keys(a as object);
-  const kb = Object.keys(b as object);
-  if (ka.length !== kb.length) return false;
-  const ao = a as Record<string, unknown>;
-  const bo = b as Record<string, unknown>;
-  for (const k of ka) {
-    if (!(k in bo)) return false;
-    if (!deepEqual(ao[k], bo[k])) return false;
-  }
-  return true;
 }

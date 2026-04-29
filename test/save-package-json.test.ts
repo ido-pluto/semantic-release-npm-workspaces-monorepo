@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import UpdatePackages from '../src/package-utils/update-packages.js';
+import {editPackageJson} from '../src/package-utils/edit-package-json.js';
 
 const TAB_FIXTURE = `{
 \t"name": "@scope/foo",
@@ -30,7 +30,7 @@ describe('_buildPatchedPackageJson', () => {
   it('returns byte-identical text when nothing changed', () => {
     const original = JSON.parse(TAB_FIXTURE);
     const current = structuredClone(original);
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TAB_FIXTURE,
       original,
       current,
@@ -46,7 +46,7 @@ describe('_buildPatchedPackageJson', () => {
       branches: [...original.release.branches],
       plugins: [...original.release.plugins],
     };
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TAB_FIXTURE,
       original,
       current,
@@ -58,7 +58,7 @@ describe('_buildPatchedPackageJson', () => {
     const original = JSON.parse(TAB_FIXTURE);
     const current = structuredClone(original);
     current.dependencies['@scope/bar'] = '^1.2.3';
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TAB_FIXTURE,
       original,
       current,
@@ -74,7 +74,7 @@ describe('_buildPatchedPackageJson', () => {
     const original = JSON.parse(TAB_FIXTURE);
     const current = structuredClone(original);
     current.release.tagFormat = 'foo@${version}';
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TAB_FIXTURE,
       original,
       current,
@@ -88,7 +88,7 @@ describe('_buildPatchedPackageJson', () => {
     const original = JSON.parse(TWO_SPACE_FIXTURE);
     const current = structuredClone(original);
     current.dependencies.bar = '^2.0.0';
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TWO_SPACE_FIXTURE,
       original,
       current,
@@ -113,7 +113,7 @@ describe('_buildPatchedPackageJson', () => {
     const current = structuredClone(original);
     current.dependencies.bar = '^2.0.0';
     current.release = {branches: ['main', 'beta']};
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       fixture,
       original,
       current,
@@ -129,7 +129,7 @@ describe('_buildPatchedPackageJson', () => {
     const current = structuredClone(original);
     current.dependencies['@scope/bar'] = '^9.9.9';
     current.release.tagFormat = 'foo@${version}';
-    const out = UpdatePackages._buildPatchedPackageJson(
+    const out = editPackageJson(
       TAB_FIXTURE,
       original,
       current,
